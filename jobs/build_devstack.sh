@@ -17,6 +17,10 @@ run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "sed -i '2 i\patch=
 
 run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "echo win_user=$WIN_USER >> /home/ubuntu/bin/config.sh; echo win_pass=$WIN_PASS >> /home/ubuntu/bin/config.sh" 5
 
+# git prep
+run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "pip install zuul==2.5.2"
+run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "zuul-cloner -v git://git.openstack.org $ZUUL_PROJECT --zuul-branch $ZUUL_BRANCH --zuul-ref $ZUUL_REF --zuul-url $ZUUL_SITE/p --workspace /opt/stack"
+
 # run devstack
 run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "source /home/ubuntu/keystonerc && /home/ubuntu/bin/run_devstack.sh $hyperv01 $ZUUL_CHANGE" 5
 

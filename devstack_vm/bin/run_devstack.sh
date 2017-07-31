@@ -54,10 +54,9 @@ then
         sed -i 's/^HOST_IP=.*/HOST_IP='$MYIP'/g' "$LOCALRC"
 fi
 
-#git config --global user.email hyper-v_ci@microsoft.com
-git config --global user.email m.capsali@gmail.com
-#git config --global user.name 'Hyper-V CI'
-git config --global user.name 'capsali'
+git config --global user.email hyper-v_ci@microsoft.com
+git config --global user.name 'Hyper-V CI'
+
 cd $tests_dir
 
 set +e

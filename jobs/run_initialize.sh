@@ -36,7 +36,7 @@ export DEVSTACK_NAME=$DEVSTACK_NAME
 export HV1_NAME=$HV1_NAME
 export ESXI_HOST=$ESXI_HOST
 
-echo DEVSTACK_NAME=$DEVSTACK_NAME | tee -a /home/jenkins-slave/runs/devstack_params.$ZUUL_UUID.txt
+echo DEVSTACK_NAME=$DEVSTACK_NAME | tee  /home/jenkins-slave/runs/devstack_params.$ZUUL_UUID.txt
 echo HV1_NAME=$HV1_NAME | tee -a /home/jenkins-slave/runs/devstack_params.$ZUUL_UUID.txt
 echo ESXI_HOST=$ESXI_HOST | tee -a /home/jenkins-slave/runs/devstack_params.$ZUUL_UUID.txt
 echo ZUUL_PROJECT=$ZUUL_PROJECT | tee -a /home/jenkins-slave/runs/devstack_params.$ZUUL_UUID.txt
@@ -49,6 +49,9 @@ ZUUL_SITE=`echo "$ZUUL_URL" |sed 's/.\{2\}$//'`
 echo ZUUL_SITE=$ZUUL_SITE | tee -a /home/jenkins-slave/runs/devstack_params.$ZUUL_UUID.txt
 
 echo "Deploying devstack $NAME"
+
+# make sure we use latest esxi scripts
+scp -r -o "StrictHostKeyChecking no" -o "UserKnownHostsFile /dev/null" -i $DEVSTACK_SSH_KEY $basedir/../esxi/* root@$ESXI_HOST:/vmfs/volumes/datastore1/
 
 # Build the env
 run_ssh_cmd_with_retry root@$ESXI_HOST $DEVSTACK_SSH_KEY "/vmfs/volumes/datastore1/build-env.sh --project $ZUUL_PROJECT --zuul-change $ZUUL_CHANGE --zuul-patchset $ZUUL_PATCHSET $LIVE_MIGRATION $DEBUG"
@@ -165,13 +168,10 @@ run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "sed -i 's/export O
 # update repos
 run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "/home/ubuntu/bin/update_devstack_repos.sh --branch $ZUUL_BRANCH --build-for $ZUUL_PROJECT" 1
 
-# gerrit-git-prep
-#run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "/home/ubuntu/bin/gerrit_git_prep.sh --zuul-site $ZUUL_SITE --gerrit-site $ZUUL_SITE --zuul-ref $ZUUL_REF --zuul-change $ZUUL_CHANGE --zuul-project $ZUUL_PROJECT" 1
-
 # get locally the vhdx files used by tempest
 run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "mkdir -p /home/ubuntu/devstack/files/images"
 run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "wget http://81.181.181.155:8081/shared/images/cirros-0.3.3-x86_64.vhdx -O /home/ubuntu/devstack/files/images/cirros-0.3.3-x86_64.vhdx"
-run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "wget http://81.181.181.155:8081/shared/images/Fedora-x86_64-20-20140618-sda.vhdx.gz -O /home/ubuntu/devstack/files/images/Fedora-x86_64-20-20140618-sda.vhdx.gz"
+#run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "wget http://81.181.181.155:8081/shared/images/Fedora-x86_64-20-20140618-sda.vhdx.gz -O /home/ubuntu/devstack/files/images/Fedora-x86_64-20-20140618-sda.vhdx.gz"
 
 # install neutron pip package as it is external
 # run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "sudo pip install -U networking-hyperv --pre"
@@ -180,12 +180,12 @@ run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "wget http://81.181
 run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "chmod a+x /home/ubuntu/devstack/local.sh"
 
 # Preparing share for HyperV logs
-run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'sudo mkdir /openstack; sudo chown -R ubuntu:ubuntu /openstack'
-run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'mkdir -p /openstack/logs; chmod 777 /openstack/logs; sudo chown nobody:nogroup /openstack/logs'
+#run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'sudo mkdir /openstack; sudo chown -R ubuntu:ubuntu /openstack'
+#run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'mkdir -p /openstack/logs; chmod 777 /openstack/logs; sudo chown nobody:nogroup /openstack/logs'
 
 # Unzip Fedora image
-echo `date -u +%H:%M:%S` "Started to unzip Fedora image.."
-run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "gzip --decompress --force /home/ubuntu/devstack/files/images/Fedora-x86_64-20-20140618-sda.vhdx.gz"
+#echo `date -u +%H:%M:%S` "Started to unzip Fedora image.."
+#run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY "gzip --decompress --force /home/ubuntu/devstack/files/images/Fedora-x86_64-20-20140618-sda.vhdx.gz"
 
 # Change hyperv hostname to reflect vm name
 #run_wsman_cmd $HV1_IP $WIN_USER $WIN_PASS 'powershell -ExecutionPolicy RemoteSigned Rename-Computer -NewName "$HV1_NAME" -Restart'
