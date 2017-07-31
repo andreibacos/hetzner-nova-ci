@@ -64,6 +64,10 @@ $ErrorActionPreference = "SilentlyContinue"
 #    Throw "Python processes still running on this host"
 #}
 
+if (-Not (Test-Path c:\openstack\Instances)){
+    mkdir c:\openstack\Instances
+}
+
 $ErrorActionPreference = "Stop"
 
 if (-not (Get-Service neutron-hyperv-agent -ErrorAction SilentlyContinue))
