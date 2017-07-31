@@ -38,6 +38,8 @@ trusted-host = 144.76.59.195
 "@
 
 $ErrorActionPreference = "SilentlyContinue"
+#disable firewall
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 
 # Do a selective teardown
 #Write-Host "Ensuring nova and neutron services are stopped."
