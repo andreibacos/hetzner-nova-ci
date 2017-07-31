@@ -1,5 +1,4 @@
 set -e
-set -x
 
 usage() {
         echo "$0 --project ZUUL_PROJECT --zuul-change ZUUL_CHANGE --zuul-patchset ZUUL_PATCHSET --enable-migration [no|yes]"
