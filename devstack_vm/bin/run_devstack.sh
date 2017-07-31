@@ -19,16 +19,16 @@ sudo ifconfig eth1 promisc up
 #firewall_manage_ports "" add disable ${TCP_PORTS[@]}
 
 # Add pip cache for devstack
-#mkdir -p $HOME/.pip
-#echo "[global]" > $HOME/.pip/pip.conf
-#echo "trusted-host = 10.20.1.8" >> $HOME/.pip/pip.conf
-#echo "index-url = http://10.20.1.8:8080/cloudbase/CI/+simple/" >> $HOME/.pip/pip.conf
-#echo "[install]" >> $HOME/.pip/pip.conf
-#echo "trusted-host = 10.20.1.8" >> $HOME/.pip/pip.conf
+mkdir -p $HOME/.pip
+echo "[global]" > $HOME/.pip/pip.conf
+echo "trusted-host = 144.76.59.195" >> $HOME/.pip/pip.conf
+echo "index-url = http://144.76.59.195:8099/cloudbase/CI/+simple/" >> $HOME/.pip/pip.conf
+echo "[install]" >> $HOME/.pip/pip.conf
+echo "trusted-host = 144.76.59.195" >> $HOME/.pip/pip.conf
 
-#sudo mkdir -p /root/.pip
-#sudo cp $HOME/.pip/pip.conf /root/.pip/
-#sudo chown -R root:root /root/.pip
+sudo mkdir -p /root/.pip
+sudo cp $HOME/.pip/pip.conf /root/.pip/
+sudo chown -R root:root /root/.pip
 
 # Update packages to latest version
 sudo pip install -U six

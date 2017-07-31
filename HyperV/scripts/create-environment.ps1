@@ -30,12 +30,12 @@ $hasMkisoFs = Test-Path $binDir\mkisofs.exe
 $hasQemuImg = Test-Path $binDir\qemu-img.exe
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
-#$pip_conf_content = @"
-#[global]
-#index-url = http://10.20.1.8:8080/cloudbase/CI/+simple/
-#[install]
-#trusted-host = 10.20.1.8
-#"@
+$pip_conf_content = @"
+[global]
+index-url = http://144.76.59.195:8099/cloudbase/CI/+simple/
+[install]
+trusted-host = 144.76.59.195
+"@
 
 $ErrorActionPreference = "SilentlyContinue"
 
@@ -176,15 +176,15 @@ Write-Host "Ensure Python folder is up to date"
 Write-Host "Extracting archive.."
 [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\$pythonArchive", "C:\")
 
-#$hasPipConf = Test-Path "$env:APPDATA\pip"
-#if ($hasPipConf -eq $false){
-#    mkdir "$env:APPDATA\pip"
-#}
-#else 
-#{
-#    Remove-Item -Force "$env:APPDATA\pip\*"
-#}
-#Add-Content "$env:APPDATA\pip\pip.ini" $pip_conf_content
+$hasPipConf = Test-Path "$env:APPDATA\pip"
+if ($hasPipConf -eq $false){
+    mkdir "$env:APPDATA\pip"
+}
+else 
+{
+    Remove-Item -Force "$env:APPDATA\pip\*"
+}
+Add-Content "$env:APPDATA\pip\pip.ini" $pip_conf_content
 
 $ErrorActionPreference = "Continue"
 & easy_install -U pip
@@ -196,16 +196,6 @@ $ErrorActionPreference = "Continue"
 $ErrorActionPreference = "Stop"
 
 popd
-
-#$hasPipConf = Test-Path "$env:APPDATA\pip"
-#if ($hasPipConf -eq $false){
-#    mkdir "$env:APPDATA\pip"
-#}
-#else 
-#{
-#    Remove-Item -Force "$env:APPDATA\pip\*"
-#}
-#Add-Content "$env:APPDATA\pip\pip.ini" $pip_conf_content
 
 cp $templateDir\distutils.cfg "$pythonDir\Lib\distutils\distutils.cfg"
 
