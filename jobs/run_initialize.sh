@@ -214,7 +214,7 @@ pid_devstack=$!
 
 # Building and joining HyperV nodes
 echo `date -u +%H:%M:%S` "Started building & joining Hyper-V node: $HV1_NAME"
-nohup $basedir/build_hyperv.sh $HV1_IP > /home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID-$HV1_NAME.log 2>&1 &
+nohup $basedir/build_hyperv.sh $HV1_IP > /home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID.log 2>&1 &
 pid_hv01=$!
 
 TIME_COUNT=0

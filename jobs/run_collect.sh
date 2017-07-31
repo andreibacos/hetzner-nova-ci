@@ -26,7 +26,7 @@ echo "Downloading logs"
 scp -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i $DEVSTACK_SSH_KEY ubuntu@$FLOATING_IP:/home/ubuntu/aggregate.tar.gz "aggregate-$VMID.tar.gz"
 
 gzip -9 /home/jenkins-slave/logs/console-$ZUUL_UUID.log
-gzip -9 /home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID-$hyperv01.log
+gzip -9 /home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID.log
 gzip -9 /home/jenkins-slave/logs/devstack-build-log-$ZUUL_UUID.log
 
 if [ "$IS_DEBUG_JOB" != "yes" ]
@@ -42,7 +42,7 @@ if [ "$IS_DEBUG_JOB" != "yes" ]
 		ssh -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i $LOGS_SSH_KEY $LOG_SERVER "tar -xzf /srv/logs/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/aggregate-logs.tar.gz -C /srv/logs/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/"
 
 		echo "Uploading temporary logs"
-        scp -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i $LOGS_SSH_KEY "/home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID-$hyperv01.log.gz" $LOG_SERVER:/srv/logs/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/hyperv-build-log-$ZUUL_UUID-$hyperv01.log.gz
+        scp -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i $LOGS_SSH_KEY "/home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID.log.gz" $LOG_SERVER:/srv/logs/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/hyperv-build-log-$ZUUL_UUID-$hyperv01.log.gz
         scp -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i $LOGS_SSH_KEY "/home/jenkins-slave/logs/devstack-build-log-$ZUUL_UUID.log.gz" $LOG_SERVER:/srv/logs/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/devstack-build-log-$ZUUL_UUID.log.gz
     
 		echo "Fixing permissions on all log files"
@@ -61,7 +61,7 @@ if [ "$IS_DEBUG_JOB" != "yes" ]
         	ssh -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i $LOGS_SSH_KEY $LOG_SERVER "tar -xzf /srv/logs/debug/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/$TIMESTAMP/aggregate-logs.tar.gz -C /srv/logs/debug/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/$TIMESTAMP/"
 
 		echo "Uploading temporary logs"
-		scp -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i $LOGS_SSH_KEY "/home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID-$hyperv01.log.gz" $LOG_SERVER:/srv/logs/debug/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/$TIMESTAMP/hyperv-build-log-$ZUUL_UUID-$hyperv01.log.gz
+		scp -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i $LOGS_SSH_KEY "/home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID.log.gz" $LOG_SERVER:/srv/logs/debug/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/$TIMESTAMP/hyperv-build-log-$ZUUL_UUID-$hyperv01.log.gz
         scp -o "UserKnownHostsFile /dev/null" -o "StrictHostKeyChecking no" -i $LOGS_SSH_KEY "/home/jenkins-slave/logs/devstack-build-log-$ZUUL_UUID.log.gz" $LOG_SERVER:/srv/logs/debug/$logs_project/$ZUUL_CHANGE/$ZUUL_PATCHSET/$TIMESTAMP/devstack-build-log-$ZUUL_UUID.log.gz
 
 		echo "Fixing permissions on all log files"
@@ -72,7 +72,7 @@ echo "Removing local copy of aggregate logs"
 rm -fv aggregate-$VMID.tar.gz
 
 echo "Removing HyperV temporary console logs.."
-rm -fv /home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID-$hyperv01.log.gz
+rm -fv /home/jenkins-slave/logs/hyperv-build-log-$ZUUL_UUID.log.gz
 
 echo "Removing temporary devstack log.."
 rm -fv /home/jenkins-slave/logs/devstack-build-log-$ZUUL_UUID.log.gz
