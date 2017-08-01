@@ -135,7 +135,7 @@ done
 if [ "$IS_DEBUG_JOB" != "yes" ]; then 
     echo "Stop devstack services"
     cd /home/ubuntu/devstack
-    ./unstack.sh
+    ./unstack.sh > /dev/null 2>&1
 fi
 
 set +e
