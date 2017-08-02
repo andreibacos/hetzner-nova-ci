@@ -224,7 +224,7 @@ echo `date -u +%H:%M:%S` "Start waiting for parallel init jobs."
 
 finished_devstack=0;
 finished_hv01=0;
-while [[ $TIME_COUNT -lt 60 ]] && [[ $PROC_COUNT -gt 0 ]]; do
+while [[ $TIME_COUNT -lt 100 ]] && [[ $PROC_COUNT -gt 0 ]]; do
     if [[ $finished_devstack -eq 0 ]]; then
         ps -p $pid_devstack > /dev/null 2>&1 || finished_devstack=$?
         [[ $finished_devstack -ne 0 ]] && PROC_COUNT=$(( $PROC_COUNT - 1 )) && echo `date -u +%H:%M:%S` "Finished building devstack"
