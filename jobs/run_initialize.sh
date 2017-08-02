@@ -224,7 +224,7 @@ echo `date -u +%H:%M:%S` "Start waiting for parallel init jobs."
 
 finished_devstack=0;
 finished_hv01=0;
-while [[ $TIME_COUNT -lt 60 ]] && [[ $PROC_COUNT -gt 0 ]]; do
+while [[ $TIME_COUNT -lt 100 ]] && [[ $PROC_COUNT -gt 0 ]]; do
     if [[ $finished_devstack -eq 0 ]]; then
         ps -p $pid_devstack > /dev/null 2>&1 || finished_devstack=$?
         [[ $finished_devstack -ne 0 ]] && PROC_COUNT=$(( $PROC_COUNT - 1 )) && echo `date -u +%H:%M:%S` "Finished building devstack"
@@ -244,9 +244,9 @@ echo `date -u +%H:%M:%S` "We looped $TIME_COUNT times, and when finishing we hav
 
 if [[ ! -z $IS_DEBUG_JOB ]] && [[ $IS_DEBUG_JOB == "yes" ]]
     then
-        echo "All build logs can be found in http://64.119.130.115/debug/$OPN_PROJECT/$ZUUL_CHANGE/$ZUUL_PATCHSET/"
+        echo "All build logs can be found in http://cloudbase-ci.com/debug/$OPN_PROJECT/$ZUUL_CHANGE/$ZUUL_PATCHSET/"
     else
-        echo "All build logs can be found in http://64.119.130.115/$OPN_PROJECT/$ZUUL_CHANGE/$ZUUL_PATCHSET/"
+        echo "All build logs can be found in http://cloudbase-ci.com/$OPN_PROJECT/$ZUUL_CHANGE/$ZUUL_PATCHSET/"
 fi
 
 if [[ $PROC_COUNT -gt 0 ]]; then
